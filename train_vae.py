@@ -85,26 +85,26 @@ def train():
             if labeled.sum() > 0:
                 labeled_imgs   = imgs[labeled]
                 labeled_labels = labels[labeled]
-                recon, mu, logvar      = model(labeled_imgs, labeled_labels)
-                loss, _, _             = vae_loss(recon, labeled_imgs, mu, logvar, beta=BETA)
+                recon, mu, logvar = model(labeled_imgs, labeled_labels)
+                loss, _, _        = vae_loss(recon, labeled_imgs, mu, logvar, beta=BETA)
                 loss.backward()
+                total_loss += loss.item()
 
             if unlabeled.sum() > 0:
-                unlabeled_imgs         = imgs[unlabeled]
-                dummy_labels           = torch.zeros(unlabeled.sum(), dtype=torch.long).to(DEVICE)
+                unlabeled_imgs          = imgs[unlabeled]
+                dummy_labels            = torch.zeros(unlabeled.sum(), dtype=torch.long).to(DEVICE)
                 recon_u, mu_u, logvar_u = model(unlabeled_imgs, dummy_labels)
                 loss_u, _, _            = vae_loss(recon_u, unlabeled_imgs, mu_u, logvar_u, beta=BETA)
                 loss_u.backward()
                 total_loss += loss_u.item()
 
             optimizer.step()
-            total_loss += loss.item() if labeled.sum() > 0 else 0.0
 
         model.eval()
 
         with torch.no_grad():
             val_imgs, val_labels = next(iter(val_loader))
-            val_imgs = val_imgs.to(DEVICE)
+            val_imgs   = val_imgs.to(DEVICE)
             val_labels = val_labels.to(DEVICE)
 
             labeled_val   = val_labels != -1
@@ -123,14 +123,14 @@ def train():
             best_ssim = val_ssim
             torch.save(model.state_dict(), os.path.join(MODEL_DIR, "vae_best.pth"))
 
-        if epoch % 5 == 0:
+        if epoch % 5 == 0 or epoch == 1:
             with torch.no_grad():
                 glasses    = model.generate(label=1, n=3, device=DEVICE)
                 no_glasses = model.generate(label=0, n=3, device=DEVICE)
                 out        = torch.cat([glasses, no_glasses], dim=0)
                 out        = (out * 0.5 + 0.5).clamp(0, 1)
                 save_image(out, os.path.join(OUTPUT_DIR, f"vae_epoch{epoch}.png"), nrow=3)
-                print(f"  Saved output images to outputs/vae_epoch{epoch}.png")
+                print(f"  Saved outputs/vae_epoch{epoch}.png")
 
     print(f"\nDone. Best SSIM: {best_ssim:.4f}")
     print(f"Model saved to {MODEL_DIR}/vae_best.pth")
