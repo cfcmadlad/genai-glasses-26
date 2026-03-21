@@ -20,7 +20,7 @@ NUM_RES_BLOCKS = 1
 BETA           = 0.25
 LR             = 1e-3
 NUM_EPOCHS     = 100
-PERC_WEIGHT    = 0.1
+PERC_WEIGHT    = 0.001
 
 
 def compute_ssim(generated_imgs, real_imgs):
@@ -86,7 +86,7 @@ def train():
                 l_imgs, l_labels  = imgs[labeled], labels[labeled]
                 recon, mu, logvar = model(l_imgs, l_labels)
                 loss, _, _        = vae_loss(recon, l_imgs, mu, logvar, beta=BETA)
-                perc_loss         = perc_fn(recon, l_imgs) * PERC_WEIGHT
+                perc_loss = perc_fn(recon, l_imgs) * PERC_WEIGHT
                 total_l           = loss + perc_loss
                 total_l.backward()
                 total_loss       += total_l.item()
