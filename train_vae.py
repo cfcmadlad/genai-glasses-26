@@ -12,8 +12,8 @@ from config import DEVICE, BATCH_SIZE, NUM_WORKERS, OUTPUT_DIR, MODEL_DIR
 
 
 LATENT_DIM     = 128
-FILTER_SIZE    = 4
-NUM_LAYERS     = 4
+FILTER_SIZE    = 7
+NUM_LAYERS     = 3
 ACTIVATION     = "elu"
 DECODER_TYPE   = "interpolation"
 NUM_RES_BLOCKS = 0
