@@ -11,15 +11,15 @@ from vae import VAE, vae_loss
 from config import DEVICE, BATCH_SIZE, NUM_WORKERS, OUTPUT_DIR, MODEL_DIR
 
 
-LATENT_DIM     = 128
-FILTER_SIZE    = 3
-NUM_LAYERS     = 3
-ACTIVATION     = "relu"
-DECODER_TYPE   = "deconv"
-NUM_RES_BLOCKS = 1
-BETA           = 1.0
-LR             = 1e-3
-NUM_EPOCHS     = 50
+LATENT_DIM     = 256      
+FILTER_SIZE    = 5        
+NUM_LAYERS     = 3        
+ACTIVATION     = "leaky_relu"  
+DECODER_TYPE   = "interpolation"  
+NUM_RES_BLOCKS = 2        
+BETA           = 0.5    
+LR             = 5e-4     
+NUM_EPOCHS     = 100     
 
 
 def compute_ssim(generated_imgs, real_imgs):
