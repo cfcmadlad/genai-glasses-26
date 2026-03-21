@@ -33,7 +33,8 @@ class FacesDataset(Dataset):
         test_df = pd.read_csv(test_csv)
 
         train_df["label"] = train_df[LABEL_COL].astype(int)
-        test_df["label"] = -1
+        test_df = pd.read_csv(os.path.join(os.path.dirname(test_csv), "test_labeled.csv"))
+        test_df["label"] = test_df["glasses"].astype(int)
 
         train_df["filename"] = train_df[FILE_COL].apply(lambda x: f"face-{int(x)}.png")
         test_df["filename"] = test_df[FILE_COL].apply(lambda x: f"face-{int(x)}.png")
@@ -56,5 +57,4 @@ class FacesDataset(Dataset):
 
         tensor = self.transforms(image=img)["image"]
         label = torch.tensor(row["label"], dtype=torch.long)
-
-        return tensor, label
+        return tensor, label #return
