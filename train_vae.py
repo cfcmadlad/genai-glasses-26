@@ -19,7 +19,7 @@ DECODER_TYPE   = "interpolation"
 NUM_RES_BLOCKS = 1
 BETA           = 0.20
 LR             = 1e-3
-NUM_EPOCHS     = 50
+NUM_EPOCHS     = 1000
 PERC_WEIGHT    = 0.05
 
 
