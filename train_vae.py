@@ -17,9 +17,9 @@ NUM_LAYERS     = 3
 ACTIVATION     = "elu"
 DECODER_TYPE   = "interpolation"
 NUM_RES_BLOCKS = 1
-BETA           = 0.20
-LR             = 1e-3
-NUM_EPOCHS     = 500
+BETA           = 0.17
+LR             = 1e-4
+NUM_EPOCHS     = 100
 PERC_WEIGHT    = 0.05
 
 
